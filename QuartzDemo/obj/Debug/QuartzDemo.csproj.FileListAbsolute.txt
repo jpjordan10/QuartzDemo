@@ -1,0 +1,9 @@
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\QuartzDemo.exe.config
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\QuartzDemo.exe
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\QuartzDemo.pdb
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\Quartz.dll
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\Quartz.pdb
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\Quartz.xml
+D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.csprojResolveAssemblyReference.cache
+D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.exe
+D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.pdb
