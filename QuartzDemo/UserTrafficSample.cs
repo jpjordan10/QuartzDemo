@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Quartz.Logging;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Quartz;
 using Quartz.Impl;
-using Quartz.Logging;
-using System.Collections.Specialized;
 
-namespace QuartzSampleApp
+namespace QuartzDemo
 {
-    public class Program
+    public class UserTrafficSample
     {
-        private static void MainAA(string[] args)
+        private static void Main(string[] args)
         {
             LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
 
@@ -37,10 +40,15 @@ namespace QuartzSampleApp
                 await scheduler.Start();
 
                 // define the job and tie it to our HelloJob class
-                IJobDetail job = JobBuilder.Create<HelloJob>()
-                    .WithIdentity("job1", "group1")
-                    .Build();
+                //IJobDetail job = JobBuilder.Create<UserTraffic>()
+                //    .WithIdentity("job1", "group1")
+                //    .Build();
 
+                IJobDetail job = JobBuilder.Create<UserTraffic>()
+                    .WithIdentity("myJob", "group1")
+                    .UsingJobData("jobSays", "Hello World!")
+                    .UsingJobData("floatValue", 3.141f)
+                    .Build();
                 /*
                  Run the job with the time defined
                  */
@@ -93,12 +101,18 @@ namespace QuartzSampleApp
             }
         }
     }
-
-    public class HelloJob : IJob
+    public class UserTraffic : IJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            await Console.Out.WriteLineAsync(DateTime.Now.ToString());
+            JobKey key = context.JobDetail.Key;
+
+            JobDataMap dataMap = context.MergedJobDataMap;
+
+            string jobSays = dataMap.GetString("jobSays");
+            float floatValue = dataMap.GetFloat("floatValue");
+
+            await Console.Error.WriteLineAsync("Instance " + key + " of DumbJob says: " + jobSays + ", and val is: " + floatValue);
         }
     }
 }

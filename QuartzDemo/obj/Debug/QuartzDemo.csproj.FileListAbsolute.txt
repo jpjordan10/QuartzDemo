@@ -7,3 +7,5 @@ D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\Quartz.xml
 D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.csprojResolveAssemblyReference.cache
 D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.exe
 D:\Proj\QuartzDemo\QuartzDemo\obj\Debug\QuartzDemo.pdb
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\log4net.dll
+D:\Proj\QuartzDemo\QuartzDemo\bin\Debug\log4net.xml
