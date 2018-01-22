@@ -1,12 +1,9 @@
-﻿using Quartz.Logging;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Logging;
 
 namespace QuartzDemo
 {
@@ -16,13 +13,13 @@ namespace QuartzDemo
         {
             LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
 
-            RunProgramRunExample().GetAwaiter().GetResult();
+            RunExample().GetAwaiter().GetResult();
 
             Console.WriteLine("Application is over, please press any key to close the application.");
             Console.ReadKey();
         }
 
-        private static async Task RunProgramRunExample()
+        private static async Task RunExample()
         {
             try
             {
@@ -40,28 +37,37 @@ namespace QuartzDemo
                 await scheduler.Start();
 
                 // define the job and tie it to our HelloJob class
-                //IJobDetail job = JobBuilder.Create<UserTraffic>()
-                //    .WithIdentity("job1", "group1")
-                //    .Build();
 
-                IJobDetail job = JobBuilder.Create<UserTraffic>()
-                    .WithIdentity("myJob", "group1")
-                    .UsingJobData("jobSays", "Hello World!")
-                    .UsingJobData("floatValue", 3.141f)
+                IJobDetail job1 = JobBuilder.Create<UserTraffic>()
+                    .WithIdentity("job1", "group1")
+                    .UsingJobData("message1", "Message from Job1")
                     .Build();
+
+                IJobDetail job2 = JobBuilder.Create<UserTraffic>()
+                    .WithIdentity("job2", "group2")
+                    .UsingJobData("message2", "Message from Job2")
+                    .Build();
+
                 /*
                  Run the job with the time defined
                  */
 
                 // Trigger the job to run now, and then repeat every 5 seconds
-                ITrigger trigger = TriggerBuilder.Create()
+                ITrigger trigger1 = TriggerBuilder.Create()
                     .WithIdentity("trigger1", "group1")
                     .StartNow()
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever())
                     .Build();
 
+                ITrigger trigger2 = TriggerBuilder.Create()
+                    .WithIdentity("trigger2", "group2")
+                    .StartNow()
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever())
+                    .Build();
+
                 // Tell quartz to schedule the job using our trigger
-                await scheduler.ScheduleJob(job, trigger);
+                await scheduler.ScheduleJob(job1, trigger1);
+                await scheduler.ScheduleJob(job2, trigger2);
 
                 // some sleep to show what's happening
                 await Task.Delay(TimeSpan.FromSeconds(60));
@@ -109,10 +115,16 @@ namespace QuartzDemo
 
             JobDataMap dataMap = context.MergedJobDataMap;
 
+            string messageJob1 = dataMap.GetString("message1");
+            string messageJob2 = dataMap.GetString("message2");
+            /*
             string jobSays = dataMap.GetString("jobSays");
             float floatValue = dataMap.GetFloat("floatValue");
-
             await Console.Error.WriteLineAsync("Instance " + key + " of DumbJob says: " + jobSays + ", and val is: " + floatValue);
+            */
+            await Console.Error.WriteLineAsync("Job 1 : " + messageJob1);
+            await Console.Error.WriteLineAsync("Job 2 : " + messageJob2);
+            await Console.Error.WriteLineAsync("***********************");
         }
     }
 }
